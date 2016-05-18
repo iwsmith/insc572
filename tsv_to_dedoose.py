@@ -43,13 +43,61 @@ HEADERS = {
         "Anything else you want us to know?": "Comments"
         }
 
+RACES = { 
+        "American Indian, Alaskan Native, Native Hawaiian",
+        "African American, Black",
+        "Asian (Japanese, Chinese, Korean, Filipino, Vietnamese)",
+        "Hispanic, Latino",
+        "Asian Indian",
+        "White" 
+        }
+
+RELIGIONS = {
+        "Agnostic",
+        "Atheist",
+        "Buddhist",
+        "Catholic",
+        "Christian",
+        "Hindu",
+        "Jewish",
+        "Muslim",
+        "New Age",
+        "No religious affiliation",
+        "Pagan",
+        "Protestant",
+        "Sikh",
+        "Spiritual (not religious)"
+        }
+
+SEXUAL_IDENTITY = {
+        "Asexual",
+        "Bisexual",
+        "Demisexual",
+        "Gay",
+        "Heteroflexible",
+        "Homoflexible",
+        "Lesbian",
+        "Pansexual",
+        "Queer",
+        "Questioning",
+        "Sapiosexual",
+        "Straight"
+        }
+
+def filter_column(known, entry):
+    if entry and entry not in known:
+        return "Other"
+    return entry
+
 FIELDS = {
         "Consent": lambda x: x == "Yes, I have read the Consent to Participate and agree to participate.",
+        "Race": partial(filter_column, RACES),
+        "Religion": partial(filter_column, RELIGIONS),
+        "Sexual Identity": partial(filter_column, SEXUAL_IDENTITY)
         }
 
 def update_field(quote, field):
     return HEADERS.get(field, field)
-
 
 def update_head(line, delimiter="\t", quote='"'):
     fields = [ s.strip().strip('"') for s in line.split(delimiter) ]
